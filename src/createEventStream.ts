@@ -1,8 +1,8 @@
-import { IEventStream } from "atomservicescore";
+import { Core } from "atomservicescore";
 import { Connector, IMQChannel } from "rbmq";
 import { endpoints } from "./endpoints";
 
-export const createEventStream = (configs?: { url: string; options?: any; }) => ((Configs): IEventStream => {
+export const createEventStream = (configs?: { url: string; options?: any; }) => ((Configs): Core.IEventStream => {
   let mqChannel: IMQChannel;
 
   const connector = Connector(Configs);
@@ -32,16 +32,27 @@ export const createEventStream = (configs?: { url: string; options?: any; }) => 
 
       await channel.consume(q, channel.toOnMessage(listeners), { noAck: true });
     },
-    publish: async (event, on, metadata) => {
+    publish: async (event, metadata, { level, scope }) => {
+      const { name, type } = event;
       const channel = await connect();
 
-      const ex = endpoints.toExchange({ level: on.level, scope: on.scope, type: event.type });
-      const topic = event.name;
-      const text = JSON.stringify(event);
+      const ex = endpoints.toExchange({ level, scope, type });
+      const topic = name;
+      const text = JSON.stringify({ event, metadata });
       const content = Buffer.from(text);
+      // tslint:disable-next-line: no-console
+      console.log("exc: ", ex);
+      // tslint:disable-next-line: no-console
+      console.log("text: ", text);
       await channel.assertExchange(ex, "direct", { autoDelete: true, durable: true });
-
       await channel.publish(ex, topic, content);
+
+      return {
+        level,
+        name,
+        scope,
+        type,
+      };
     },
     subscribe: async (on, to, process) => {
       const channel = await connect();
@@ -52,8 +63,20 @@ export const createEventStream = (configs?: { url: string; options?: any; }) => 
       await channel.assertExchange(ex, "direct", { autoDelete: true, durable: true });
       await channel.assertQueue(q, { autoDelete: true, durable: true });
       await channel.bindQueue(q, ex, topic);
+      const onMessage = channel.toOnMessageWithAck((data, ack) => {
+        const { event, metadata } = data;
+        const processAck = async () => {
+          ack();
+        };
+        process(event, metadata, processAck);
+      });
 
-      await channel.consume(q, channel.toOnMessageWithAck(process), { noAck: false });
+      await channel.consume(q, onMessage, { noAck: false });
+
+      return {
+        on,
+        to,
+      };
     },
   };
 })(configs);
