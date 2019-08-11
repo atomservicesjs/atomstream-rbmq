@@ -40,10 +40,6 @@ export const createEventStream = (configs?: { url: string; options?: any; }) => 
       const topic = name;
       const text = JSON.stringify({ event, metadata });
       const content = Buffer.from(text);
-      // tslint:disable-next-line: no-console
-      console.log("exc: ", ex);
-      // tslint:disable-next-line: no-console
-      console.log("text: ", text);
       await channel.assertExchange(ex, "direct", { autoDelete: true, durable: true });
       await channel.publish(ex, topic, content);
 
