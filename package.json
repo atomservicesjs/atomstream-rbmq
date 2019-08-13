@@ -2,7 +2,6 @@
   "name": "atomstream-rbmq",
   "version": "0.6.0-alpha.1",
   "description": "Providing Event Stream Implementing RabbitMQ using AMQ Protocol",
-  "private": true,
   "main": "./lib/index.js",
   "typings": "./typings/index.d.ts",
   "scripts": {
@@ -37,6 +36,7 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
+    "@types/amqplib": "^0.5.13",
     "@types/chai": "^4.2.0",
     "@types/mocha": "^5.2.7",
     "@types/mock-require": "^2.0.0",
