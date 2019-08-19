@@ -1,8 +1,8 @@
-import { Core } from "atomservicescore";
+import { IEventStream } from "atomservicescore";
 import { Connector, IMQChannel } from "rbmq";
 import { endpoints } from "./endpoints";
 
-export const createEventStream = (configs?: { url: string; options?: any; }) => ((Configs): Core.IEventStream => {
+export const createEventStream = (configs?: { url: string; options?: any; }) => ((Configs): IEventStream => {
   let mqChannel: IMQChannel;
 
   const connector = Connector(Configs);
