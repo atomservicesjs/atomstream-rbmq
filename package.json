@@ -1,6 +1,6 @@
 {
   "name": "atomstream-rbmq",
-  "version": "0.6.0-alpha.5",
+  "version": "0.6.0-alpha.8",
   "description": "Providing Event Stream Implementing RabbitMQ using AMQ Protocol",
   "main": "./lib/index.js",
   "typings": "./typings/index.d.ts",
@@ -31,8 +31,8 @@
   "license": "MIT",
   "repository": "git+https://github.com/atomservicesjs/atomstream-rbmq",
   "dependencies": {
-    "atomservicescore": "0.6.0-alpha.5",
-    "rbmq": "0.6.0-alpha.5"
+    "atomservicescore": "0.6.0-alpha.8",
+    "rbmq": "0.6.0-alpha.8"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
@@ -40,7 +40,7 @@
     "@types/chai": "^4.2.0",
     "@types/mocha": "^5.2.7",
     "@types/mock-require": "^2.0.0",
-    "@types/node": "^12.7.1",
+    "@types/node": "^12.7.2",
     "@types/sinon": "^7.0.13",
     "chai": "^4.2.0",
     "coveralls": "^3.0.6",
@@ -51,7 +51,7 @@
     "sinon": "^7.4.1",
     "source-map-support": "^0.5.13",
     "ts-node": "^8.3.0",
-    "tslint": "^5.18.0",
+    "tslint": "^5.19.0",
     "typescript": "^3.5.3"
   }
 }
