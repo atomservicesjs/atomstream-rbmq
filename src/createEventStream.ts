@@ -70,7 +70,7 @@ export const createEventStream = (configs?: { url: string; options?: any; }, fac
             queues[q] = { q, onMessage };
           }
 
-          binds.push({ ex, q, topic: name });
+          binds.push({ ex, q, topic: reaction.name });
         });
 
         // 1. START :: assert Exchanges
