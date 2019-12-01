@@ -1,11 +1,11 @@
-import { EventStream, IEventStream } from "atomservicescore";
+import { IEventStream, IServiceStreamDefinition } from "atomservicescore";
 import { Connector as RBMQConnector, IMQChannel } from "rbmq";
 import { endpoints } from "./endpoints";
 
 export const createEventStream = (configs?: { url: string; options?: any; }, factory?: any) => ((Configs): IEventStream => {
   let mqChannel: IMQChannel;
   const Factory = factory || RBMQConnector;
-  const StreamDefinitions: EventStream.IServiceStreamDefinition[] = [];
+  const StreamDefinitions: IServiceStreamDefinition[] = [];
 
   const connector = Factory(Configs);
   const connect = async (): Promise<IMQChannel> => {
@@ -27,7 +27,7 @@ export const createEventStream = (configs?: { url: string; options?: any; }, fac
       for (const definition of StreamDefinitions) {
         const { handlers, reactions, scope, type } = definition;
 
-        handlers.events.forEach(({ level, name }) => {
+        handlers.events.forEach(({ name, level }) => {
           const ex = endpoints.toExchange({ level, scope, type });
           const q = endpoints.toQueue({ channel: "EventHandler", scope, type });
 
