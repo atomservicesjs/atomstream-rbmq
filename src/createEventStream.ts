@@ -130,7 +130,7 @@ export const createEventStream = (configs?: { url: string; options?: any; }, fac
       await channel.assertQueue(q, { autoDelete: true, durable: true });
       await channel.consume(q, channel.toOnMessage(listeners), { noAck: true });
     },
-    publish: async (on, metadata, event) => {
+    publish: async ({ on, metadata, event }) => {
       const { level, scope } = on;
       const { name, type } = event;
       const Channel = await connect();
